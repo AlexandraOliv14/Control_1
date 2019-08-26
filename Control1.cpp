@@ -2,32 +2,35 @@
 #include <math.h>
 #include <complex>
 #include <complex.h>
+#include <stdio.h>
 
 using namespace std;
 
-int main()
+int main(char *argv[],int argc)
 {
     string funcion;
-    float x, i=0;
-    float constante=1;
-    float elevado;
-    float funcion1=0;
+    funcion = argv[1];
+    double x, i=0;
+    double constante=1;
+    double elevado;
+    double funcion1=0;
     string variable;
     string variable2;
     string variable3;
-    float funciondev=0;
-    float resultado;
-    float error;
+    double funciondev=0;
+    double resultado;
+    double error;
     string fin;
     string finmenos;
+    int cont =0;
 
-    cout << "ingrese una funcion"<<endl;
-    cin >> funcion;
+  //cd p  cout << "ingrese una funcion"<<endl;
+//   cin >> funcion;
 
-    cout << "ingrese valor de x"<<endl;
-    cin >> x;
 
-    while(error<0.05){
+    x=1.5;
+
+    while(error < 0.05){
         funcion1=0;
         funciondev=0;
         while (i<funcion.length())        // largo del string
@@ -40,26 +43,20 @@ int main()
             {
                 if (isdigit(funcion[i-1]))  //Ve si el anterior a la x es un numero
                 {
-                    constante=funcion[i-1];
-                     cout<<"constante"<<endl;
-                            cout<<constante<<endl;
+                    constante=funcion[i-1]-48;
                     if (isdigit(funcion[i+3]))  //ve si el exponente es numero
                     {
-                        elevado = funcion[i+3];
-                         cout<<"elevado"<<endl;
-                            cout<<elevado<<endl;
+                        elevado = funcion[i+3]-48;
                         if (variable2=="-")
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            cout<<"funcion"<<endl;
-                            cout<<funcion1<<endl;
-                            funciondev= funciondev - abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev - fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                         else
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev + abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev + fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                     }
@@ -69,13 +66,13 @@ int main()
                          if (variable2=="-")
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev - abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev - fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                         else
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev + abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev + fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                     }
@@ -85,18 +82,18 @@ int main()
                 {
                     if (isdigit(funcion[i+3]))
                     {
-                        elevado = funcion[i+3];
+                        elevado = funcion[i+3]-48;
                         constante= 1;
                         if (variable3=="-")
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev - abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev - fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                         else
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev + abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev + fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                     }
@@ -107,13 +104,13 @@ int main()
                         if (variable3=="-")
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev - abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev - fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                         else
                         {
                             funcion1=funcion1+abs(constante*(pow(x,elevado)));
-                            funciondev= funciondev + abs(constante*(elevado*(pow(x,elevado-1))));
+                            funciondev= funciondev + fabs(constante*(elevado*(pow(x,elevado-1))));
 
                         }
                     }
@@ -123,32 +120,67 @@ int main()
         }
         i++;
     }
-    fin=funcion[funcion.length()];
-    finmenos= funcion[funcion.length()-1];
-    if (finmenos == "-")
+
+    fin=funcion[funcion.length()-1];
+    finmenos= funcion[funcion.length()-2];
+
+
+    if (x=!resultado)
     {
-        if((fin != "x"))
+        while (funcion1*funciondev <= 0)
         {
+            x=x/2;
+        }
+    }
+
+        if (finmenos == "-")
+        {
+            if(fin != "x")
+            {
             funcion1 =funcion1 - funcion[funcion.length()];
-                cout<< "menos" <<endl;
+
+            resultado= x - (funcion1/funciondev);
+            error= fabs(resultado-x);
+            x= resultado;
+
+            cout<< "resultado obtenido: " << x <<endl;
+            cout<< "error obtenido: "<< error <<endl;
+            }
 
         }
-    }
-    else if (finmenos == "+")
-    {
-        if((fin != "x"))
+        else if (finmenos == "+")
         {
+            if((fin != "x"))
+            {
             funcion1 =funcion1 + funcion[funcion.length()];
+
+            resultado= x - (funcion1/funciondev);
+            error=fabs(resultado-x);
+            x= resultado;
+
+            cout<< "resultado obtenido: " << x <<endl;
+            cout<< "error obtenido: "<< error <<endl;
+            }
+
         }
-    }
-    resultado= x - (funcion1/funciondev);
-    error=(resultado-x)/resultado;
-    x= resultado;
 
-    cout<< funciondev <<endl;
-     cout<< funcion1 <<endl;
-    cout<< x <<endl;
+        else
+        {
+
+            resultado= x - (funcion1/funciondev);
+            error=fabs(resultado-x);
+            x= resultado;
+
+            cout<< "resultado obtenido: " << x <<endl;
+            cout<< "error obtenido: "<< error <<endl;
+
+        }
 
     }
+
+
+
+    cout<< "resultado obtenido: " << x <<endl;
+    cout<< "error obtenido: "<< error <<endl;
     return 0;
 }
